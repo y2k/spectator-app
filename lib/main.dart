@@ -63,10 +63,20 @@ class SnapshotWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: Column(
           children: <Widget>[
-            Text(snapshot.title),
+            AspectRatio(
+              aspectRatio: 1.3,
+              child: Image.network(
+                snapshot.preview,
+                fit: BoxFit.fitWidth,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Text(snapshot.title),
+            ),
           ],
         ),
       ),

@@ -18,9 +18,13 @@ class Snapshot {
 class Services {
   static Future<List<Snapshot>> foo() async {
     return [
-      Snapshot("A1", "B1"),
-      Snapshot("A2", "B2"),
-      Snapshot("A3", "B3"),
+      Snapshot("joel27, art, красивые картинки", "http://img0.joyreactor.cc/pics/post/-4004930.jpeg"),
+      Snapshot("joel27, art, красивые картинки", "http://img0.joyreactor.cc/pics/post/-4004930.jpeg"),
+      Snapshot("joel27, art, красивые картинки", "http://img0.joyreactor.cc/pics/post/-4004930.jpeg"),
+      Snapshot("joel27, art, красивые картинки", "http://img0.joyreactor.cc/pics/post/-4004930.jpeg"),
+      Snapshot("joel27, art, красивые картинки", "http://img0.joyreactor.cc/pics/post/-4004930.jpeg"),
+      Snapshot("joel27, art, красивые картинки", "http://img0.joyreactor.cc/pics/post/-4004930.jpeg"),
+      Snapshot("joel27, art, красивые картинки", "http://img0.joyreactor.cc/pics/post/-4004930.jpeg"),
     ];
   }
 }
