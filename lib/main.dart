@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:spectator/create.dart';
 import 'package:spectator/domain.dart';
 
-void main() => runApp(new MyApp());
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
-      title: 'Flutter Demo',
-      theme: new ThemeData(
-        primarySwatch: Colors.cyan,
-      ),
-      home: new MyHomePage(title: 'Spectator'),
+    return MaterialApp(
+      theme: ThemeData(primarySwatch: Colors.cyan),
+      // home: new MyHomePage(title: 'Spectator'),
+      home: CreateSubscriptionPage(),
     );
   }
 }
