@@ -2,6 +2,7 @@ import 'package:dartea/dartea.dart';
 import 'package:flutter/material.dart' hide Builder;
 import 'package:built_value/built_value.dart';
 import 'package:spectator/domain.dart';
+import 'package:spectator/elm.dart';
 
 part 'create.g.dart';
 
@@ -10,8 +11,10 @@ part 'create.g.dart';
 //
 
 abstract class Model implements Built<Model, ModelBuilder> {
+  @nullable
   String get url;
   bool get isBusy;
+
   Model._();
   factory Model([updates(ModelBuilder b)]) = _$Model;
 }
@@ -32,24 +35,31 @@ class CreateFailedMsg implements Msg {
   CreateFailedMsg(this.exn);
 }
 
-Model init() => Model();
+class CloseMsg implements Msg {}
 
-Upd<Model, Msg> reduce(Model model, Msg event) {
-  if (event is EditMsg) return Upd(model.rebuild((x) => x.url = event.text));
-  if (event is PressMsg)
-    return Upd(
-      model.rebuild((x) => x.isBusy = true),
-      effects: Cmd.ofAsyncAction(
-        () => Effects.createSubscription(model.url),
-        onSuccess: () => CreateSuccessMsg(),
-        onError: (e) => CreateFailedMsg(e),
-      ),
-    );
-  if (event is CreateSuccessMsg)
-    return Upd(model.rebuild((x) => x.isBusy = false));
-  if (event is CreateFailedMsg)
-    return Upd(model.rebuild((x) => x.isBusy = false));
-  return Upd(model);
+class CreateModule implements ElmPage<Model, Msg> {
+  Upd<Model, Msg> init() => Upd(Model((b) => b.isBusy = false));
+
+  Upd<Model, Msg> reduce(Model model, Msg event) {
+    if (event is EditMsg) return Upd(model.rebuild((x) => x.url = event.text));
+    if (event is PressMsg)
+      return Upd(
+        model.rebuild((x) => x.isBusy = true),
+        effects: Cmd.ofAsyncAction(
+          () => Effects.createSubscription(model.url),
+          onSuccess: () => CreateSuccessMsg(),
+          onError: (e) => CreateFailedMsg(e),
+        ),
+      );
+    if (event is CreateSuccessMsg)
+      return Upd(model.rebuild((x) => x.isBusy = false),
+          effects: Cmd.ofMsg(CloseMsg()));
+    if (event is CreateFailedMsg)
+      return Upd(model.rebuild((x) => x.isBusy = false));
+    if (event is CloseMsg)
+      return Upd(model, effects: Cmd.ofAction(() => Navigator.pop(null)));
+    return Upd(model);
+  }
 }
 
 //
@@ -58,12 +68,19 @@ Upd<Model, Msg> reduce(Model model, Msg event) {
 
 class CreateSubscriptionPage extends StatefulWidget {
   @override
-  CreateSubscriptionPageState createState() =>
-      new CreateSubscriptionPageState();
+  _CreateSubscriptionPageState createState() => _CreateSubscriptionPageState();
 }
 
-class CreateSubscriptionPageState extends State<CreateSubscriptionPage> {
-  Model _model = init();
+class _CreateSubscriptionPageState extends State<CreateSubscriptionPage>
+    implements StateHolder<Model> {
+  ElmManager<Model, Msg> elm;
+  Model _model;
+
+  @override
+  void initState() {
+    super.initState();
+    elm = ElmManager(CreateModule(), this);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,30 +90,20 @@ class CreateSubscriptionPageState extends State<CreateSubscriptionPage> {
           TextField(
             enabled: !_model.isBusy,
             decoration: InputDecoration(labelText: "Url"),
-            onChanged: (text) {
-              var upd = reduce(_model, EditMsg(text));
-              setState(() => _model = upd.model);
-            },
+            onChanged: (text) => elm.dispatch(EditMsg(text)),
           ),
           RaisedButton(
             child: Text("Create"),
-            onPressed: _model.isBusy
-                ? null
-                : () async {
-                    var upd = reduce(_model, PressMsg());
-                    setState(() => _model = upd.model);
-
-                    upd.effects.forEach((f) {
-                      f((x) {
-                        var upd2 = reduce(_model, x);
-                        setState(() => _model = upd2.model);
-                      });
-                    });
-                  },
+            onPressed: _model.isBusy ? null : () => elm.dispatch(PressMsg()),
           ),
           _model.isBusy ? CircularProgressIndicator() : Column(),
         ],
       ),
     );
   }
+
+  @override
+  Model getState() => _model;
+  @override
+  void updateState(Model value) => setState(() => _model = value);
 }

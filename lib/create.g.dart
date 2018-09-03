@@ -28,7 +28,6 @@ class _$Model extends Model {
       (new ModelBuilder()..update(updates)).build();
 
   _$Model._({this.url, this.isBusy}) : super._() {
-    if (url == null) throw new BuiltValueNullFieldError('Model', 'url');
     if (isBusy == null) throw new BuiltValueNullFieldError('Model', 'isBusy');
   }
 

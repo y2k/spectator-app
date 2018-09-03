@@ -16,7 +16,7 @@ class Snapshot {
 }
 
 class Services {
-  static Future<List<Snapshot>> foo() async {
+  static Future<List<Snapshot>> getAllSnapshots() async {
     return [
       Snapshot("joel27, art, красивые картинки",
           "http://img0.joyreactor.cc/pics/post/-4004930.jpeg"),
