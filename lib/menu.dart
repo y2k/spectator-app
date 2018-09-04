@@ -1,12 +1,9 @@
 import 'package:dartea/dartea.dart';
 import 'package:flutter/material.dart';
 import 'package:spectator/domain.dart';
-import 'package:spectator/elm.dart';
 
 // type Model = { list : Subscription list }
-// type Msg =
-//   | LoadedMsg of Subscription list
-//   | SelectedMsg of Subscription
+// type Msg = LoadedMsg of Subscription list | SelectedMsg of Subscription
 
 class Model {
   final List<Subscription> list;

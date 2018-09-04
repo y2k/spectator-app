@@ -40,7 +40,7 @@ Upd<Model, Msg> _update(Msg event, Model model) {
     return Upd(
       model.rebuild((b) => b.isBusy = true),
       effects: Cmd.ofAsyncAction(
-        () => Effects.createSubscription(model.url),
+        () => Services.createSubscription(model.url),
         onSuccess: () => CreateSuccessMsg(),
         onError: (e) => CreateFailedMsg(e),
       ),

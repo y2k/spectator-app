@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:google_sign_in/google_sign_in.dart';
 
 class Subscription {
@@ -17,6 +16,10 @@ class Snapshot {
 }
 
 class Services {
+  static Future<void> createSubscription(String url) async {
+    await Future.delayed(Duration(seconds: 3));
+  }
+
   static Future<void> signin() async {
     GoogleSignIn _googleSignIn = new GoogleSignIn(
       scopes: [
@@ -52,10 +55,4 @@ class Services {
         Snapshot("joel27, art, красивые картинки",
             "http://img0.joyreactor.cc/pics/post/-4004930.jpeg"),
       ];
-}
-
-class Effects {
-  static Future<void> createSubscription(String url) async {
-    await Future.delayed(Duration(seconds: 3));
-  }
 }
