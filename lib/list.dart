@@ -2,16 +2,12 @@ import 'package:dartea/dartea.dart';
 import 'package:flutter/material.dart';
 import 'package:spectator/create.dart';
 import 'package:spectator/domain.dart';
-import 'package:spectator/elm.dart';
-
-//
-// Update
-//
+import 'package:spectator/menu.dart';
 
 class Model {
   final List<Snapshot> list;
   Model(this.list);
-  Model copyWith({List<Snapshot> list}) => Model(list ?? this.list);
+  Model copy({List<Snapshot> list}) => Model(list ?? this.list);
 }
 
 abstract class Msg {}
@@ -21,68 +17,39 @@ class LoadedMsg extends Msg {
   LoadedMsg(this.list);
 }
 
-class PageFunctions implements ElmPage<Model, Msg> {
-  Upd<Model, Msg> init() => Upd(
-        Model(List<Snapshot>()),
-        effects: Cmd.ofAsyncFunc(
-          () => Services.getAllSnapshots(),
-          onSuccess: (x) => LoadedMsg(x),
-        ),
-      );
-
-  Upd<Model, Msg> reduce(Model model, Msg msg) {
-    if (msg is LoadedMsg) return Upd(model.copyWith(list: msg.list));
-    return Upd(model);
-  }
+Upd<Model, Msg> _init() {
+  return Upd(
+    Model(List<Snapshot>()),
+    effects: Cmd.ofAsyncFunc(
+      () => Services.getAllSnapshots(),
+      onSuccess: (x) => LoadedMsg(x),
+    ),
+  );
 }
 
-//
-// View
-//
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-  final String title;
-
-  @override
-  _MyHomePageState createState() => new _MyHomePageState();
+Upd<Model, Msg> _update(Msg msg, Model model) {
+  if (msg is LoadedMsg) return Upd(model.copy(list: msg.list));
+  return Upd(model);
 }
 
-class _MyHomePageState extends State<MyHomePage> implements StateHolder<Model> {
-  Model _model;
-  ElmManager<Model, Msg> elm;
-
-  @override
-  void initState() {
-    super.initState();
-    elm = ElmManager(PageFunctions(), this);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(title: new Text(widget.title)),
-      body: ListView.builder(
-        itemCount: _model.list.length,
-        itemBuilder: (context, index) =>
-            new SnapshotWidget(snapshot: _model.list[index]),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => CreateSubscriptionPage()),
-          );
-        },
-        child: Icon(Icons.create),
-      ),
-    );
-  }
-
-  @override
-  Model getState() => _model;
-  @override
-  void updateState(Model value) => setState(() => _model = value);
+Widget _view(BuildContext context, Dispatch<Msg> dispatch, Model model) {
+  return new Scaffold(
+    appBar: AppBar(title: Text("Spectator")),
+    drawer: Drawer(child: mkMenuWidget()),
+    body: ListView.builder(
+      itemCount: model.list.length,
+      itemBuilder: (_, index) => SnapshotWidget(snapshot: model.list[index]),
+    ),
+    floatingActionButton: FloatingActionButton(
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => mkCreateWidget()),
+        );
+      },
+      child: Icon(Icons.create),
+    ),
+  );
 }
 
 class SnapshotWidget extends StatelessWidget {
@@ -114,3 +81,5 @@ class SnapshotWidget extends StatelessWidget {
     );
   }
 }
+
+Widget mkListWidget() => Program(_init, _update, _view).build();

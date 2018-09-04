@@ -8,7 +8,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(primarySwatch: Colors.cyan),
-      home: new MyHomePage(title: 'Spectator'),
+      home: mkListWidget(),
     );
   }
 }
