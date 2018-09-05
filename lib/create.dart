@@ -42,12 +42,13 @@ Upd<Model, Msg> _update(Msg event, Model model) {
       effects: Cmd.ofAsyncAction(
         () => Services.createSubscription(model.url),
         onSuccess: () => CreateSuccessMsg(),
-        onError: (e) => CreateFailedMsg(e),
       ),
     );
   if (event is CreateSuccessMsg)
-    return Upd(model.rebuild((b) => b.isBusy = false),
-        effects: Cmd.ofMsg(CloseMsg()));
+    return Upd(
+      model.rebuild((b) => b.isBusy = false),
+      effects: Cmd.ofMsg(CloseMsg()),
+    );
   if (event is CreateFailedMsg)
     return Upd(model.rebuild((b) => b.isBusy = false));
   if (event is CloseMsg)
