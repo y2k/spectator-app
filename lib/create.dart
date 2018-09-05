@@ -9,6 +9,7 @@ abstract class Model implements Built<Model, ModelBuilder> {
   @nullable
   String get url;
   bool get isBusy;
+  bool get isCanCreate;
 
   Model._();
   factory Model([updates(ModelBuilder b)]) = _$Model;
@@ -32,13 +33,20 @@ class CreateFailedMsg implements Msg {
 
 class CloseMsg implements Msg {}
 
-Upd<Model, Msg> _init() => Upd(Model((b) => b.isBusy = false));
+Upd<Model, Msg> _init() => Upd(Model((b) => b
+  ..isBusy = false
+  ..isCanCreate = false));
 
 Upd<Model, Msg> _update(Msg event, Model model) {
-  if (event is EditMsg) return Upd(model.rebuild((b) => b.url = event.text));
+  if (event is EditMsg)
+    return Upd(model.rebuild((b) => b
+      ..url = event.text
+      ..isCanCreate = !model.isBusy && event.text.isNotEmpty));
   if (event is PressMsg)
     return Upd(
-      model.rebuild((b) => b.isBusy = true),
+      model.rebuild((b) => b
+        ..isBusy = true
+        ..isCanCreate = false),
       effects: Cmd.ofAsyncAction(
         () => Services.createSubscription(model.url),
         onSuccess: () => CreateSuccessMsg(),
@@ -46,7 +54,9 @@ Upd<Model, Msg> _update(Msg event, Model model) {
     );
   if (event is CreateSuccessMsg)
     return Upd(
-      model.rebuild((b) => b.isBusy = false),
+      model.rebuild((b) => b
+        ..isBusy = false
+        ..isCanCreate = true),
       effects: Cmd.ofMsg(CloseMsg()),
     );
   if (event is CreateFailedMsg)
@@ -70,7 +80,7 @@ Widget _view(BuildContext context, Dispatch<Msg> dispatch, Model model) {
           ),
           RaisedButton(
             child: Text("Create"),
-            onPressed: model.isBusy ? null : () => dispatch(PressMsg()),
+            onPressed: model.isCanCreate ? () => dispatch(PressMsg()) : null,
           ),
           model.isBusy ? CircularProgressIndicator() : Column(),
         ],

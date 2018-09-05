@@ -17,18 +17,26 @@ part of 'create.dart';
 // ignore_for_file: sort_constructors_first
 // ignore_for_file: unnecessary_const
 // ignore_for_file: unnecessary_new
+// ignore_for_file: test_types_in_equals
 
 class _$Model extends Model {
   @override
   final String url;
   @override
   final bool isBusy;
+  @override
+  final bool isCanCreate;
 
   factory _$Model([void updates(ModelBuilder b)]) =>
       (new ModelBuilder()..update(updates)).build();
 
-  _$Model._({this.url, this.isBusy}) : super._() {
-    if (isBusy == null) throw new BuiltValueNullFieldError('Model', 'isBusy');
+  _$Model._({this.url, this.isBusy, this.isCanCreate}) : super._() {
+    if (isBusy == null) {
+      throw new BuiltValueNullFieldError('Model', 'isBusy');
+    }
+    if (isCanCreate == null) {
+      throw new BuiltValueNullFieldError('Model', 'isCanCreate');
+    }
   }
 
   @override
@@ -41,19 +49,24 @@ class _$Model extends Model {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is Model && url == other.url && isBusy == other.isBusy;
+    return other is Model &&
+        url == other.url &&
+        isBusy == other.isBusy &&
+        isCanCreate == other.isCanCreate;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc(0, url.hashCode), isBusy.hashCode));
+    return $jf(
+        $jc($jc($jc(0, url.hashCode), isBusy.hashCode), isCanCreate.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('Model')
           ..add('url', url)
-          ..add('isBusy', isBusy))
+          ..add('isBusy', isBusy)
+          ..add('isCanCreate', isCanCreate))
         .toString();
   }
 }
@@ -69,12 +82,17 @@ class ModelBuilder implements Builder<Model, ModelBuilder> {
   bool get isBusy => _$this._isBusy;
   set isBusy(bool isBusy) => _$this._isBusy = isBusy;
 
+  bool _isCanCreate;
+  bool get isCanCreate => _$this._isCanCreate;
+  set isCanCreate(bool isCanCreate) => _$this._isCanCreate = isCanCreate;
+
   ModelBuilder();
 
   ModelBuilder get _$this {
     if (_$v != null) {
       _url = _$v.url;
       _isBusy = _$v.isBusy;
+      _isCanCreate = _$v.isCanCreate;
       _$v = null;
     }
     return this;
@@ -82,7 +100,9 @@ class ModelBuilder implements Builder<Model, ModelBuilder> {
 
   @override
   void replace(Model other) {
-    if (other == null) throw new ArgumentError.notNull('other');
+    if (other == null) {
+      throw new ArgumentError.notNull('other');
+    }
     _$v = other as _$Model;
   }
 
@@ -93,7 +113,8 @@ class ModelBuilder implements Builder<Model, ModelBuilder> {
 
   @override
   _$Model build() {
-    final _$result = _$v ?? new _$Model._(url: url, isBusy: isBusy);
+    final _$result = _$v ??
+        new _$Model._(url: url, isBusy: isBusy, isCanCreate: isCanCreate);
     replace(_$result);
     return _$result;
   }

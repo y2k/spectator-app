@@ -7,7 +7,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(primarySwatch: Colors.cyan),
+      theme: ThemeData(
+        primarySwatch: Colors.cyan,
+        primaryColorBrightness: Brightness.dark,
+        accentColorBrightness: Brightness.dark,
+      ),
       home: mkListWidget(),
     );
   }

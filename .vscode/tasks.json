@@ -6,7 +6,8 @@
         {
             "label": "build_runner",
             "type": "shell",
-            "command": "flutter packages pub run build_runner build"
+            "command": "flutter packages pub run build_runner build",
+            "problemMatcher": []
         }
     ]
 }

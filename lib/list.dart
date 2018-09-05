@@ -60,19 +60,17 @@ class SnapshotWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: FlatButton(
+        padding: EdgeInsets.only(top: 8.0),
+        onPressed: () {},
         child: Column(
           children: <Widget>[
             AspectRatio(
               aspectRatio: 1.3,
-              child: Image.network(
-                snapshot.preview,
-                fit: BoxFit.fitWidth,
-              ),
+              child: Image.network(snapshot.preview, fit: BoxFit.fitWidth),
             ),
             Padding(
-              padding: const EdgeInsets.all(4.0),
+              padding: const EdgeInsets.all(8.0),
               child: Text(snapshot.title),
             ),
           ],
