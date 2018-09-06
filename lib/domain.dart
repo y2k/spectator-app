@@ -56,4 +56,7 @@ class Services {
         Snapshot(6, "joel27, art, красивые картинки",
             "http://img0.joyreactor.cc/pics/post/-4004930.jpeg"),
       ];
+
+  static Future<Snapshot> getSnapshot(int id) async =>
+      (await getAllSnapshots()).firstWhere((x) => x.id == id);
 }

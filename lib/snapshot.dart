@@ -1,21 +1,39 @@
 import 'package:dartea/dartea.dart';
 import 'package:flutter/material.dart';
+import 'package:spectator/domain.dart';
 
 class Model {
   final String preview;
-  Model(this.preview);
+  final String title;
+  final String updated;
+  Model(this.preview, this.title, this.updated);
 }
 
 abstract class Msg {}
 
-Upd<Model, Msg> _init(int id) => Upd(Model(id.toString()));
+class SnapshotMsg extends Msg {
+  final Snapshot snapshot;
+  SnapshotMsg(this.snapshot);
+}
+
+Upd<Model, Msg> _init(int id) => Upd(
+      Model(id.toString(), "", ""),
+      effects: Cmd.ofAsyncFunc(
+        () => Services.getSnapshot(id),
+        onSuccess: (r) => SnapshotMsg(r),
+      ),
+    );
 
 Upd<Model, Msg> _update(Msg msg, Model model) => Upd(model);
 
 Widget _view(BuildContext context, Dispatch<Msg> dispatch, Model model) {
   return Scaffold(
     appBar: AppBar(title: Text("Snapshot")),
-    body: Center(child: Text("Hello World #" + model.preview)),
+    body: Column(
+      children: <Widget>[
+        Center(child: Text("Hello World #" + model.preview)),
+      ],
+    ),
   );
 }
 
