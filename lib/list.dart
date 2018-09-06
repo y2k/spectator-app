@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:spectator/create.dart';
 import 'package:spectator/domain.dart';
 import 'package:spectator/menu.dart';
+import 'package:spectator/snapshot.dart';
 
 class Model {
   final List<Snapshot> list;
@@ -61,8 +62,11 @@ class SnapshotWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: FlatButton(
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (_) => mkSnapshotWidget(snapshot.id)));
+        },
         padding: EdgeInsets.only(top: 8.0),
-        onPressed: () {},
         child: Column(
           children: <Widget>[
             AspectRatio(

@@ -9,10 +9,11 @@ class Subscription {
 }
 
 class Snapshot {
+  final int id;
   final String title;
   final String preview;
 
-  const Snapshot(this.title, this.preview);
+  const Snapshot(this.id, this.title, this.preview);
 }
 
 class Services {
@@ -40,19 +41,19 @@ class Services {
       ];
 
   static Future<List<Snapshot>> getAllSnapshots() async => [
-        Snapshot("joel27, art, красивые картинки",
+        Snapshot(0, "joel27, art, красивые картинки",
             "http://img0.joyreactor.cc/pics/post/-4004930.jpeg"),
-        Snapshot("joel27, art, красивые картинки",
+        Snapshot(1, "joel27, art, красивые картинки",
             "http://img0.joyreactor.cc/pics/post/-4004930.jpeg"),
-        Snapshot("joel27, art, красивые картинки",
+        Snapshot(2, "joel27, art, красивые картинки",
             "http://img0.joyreactor.cc/pics/post/-4004930.jpeg"),
-        Snapshot("joel27, art, красивые картинки",
+        Snapshot(3, "joel27, art, красивые картинки",
             "http://img0.joyreactor.cc/pics/post/-4004930.jpeg"),
-        Snapshot("joel27, art, красивые картинки",
+        Snapshot(4, "joel27, art, красивые картинки",
             "http://img0.joyreactor.cc/pics/post/-4004930.jpeg"),
-        Snapshot("joel27, art, красивые картинки",
+        Snapshot(5, "joel27, art, красивые картинки",
             "http://img0.joyreactor.cc/pics/post/-4004930.jpeg"),
-        Snapshot("joel27, art, красивые картинки",
+        Snapshot(6, "joel27, art, красивые картинки",
             "http://img0.joyreactor.cc/pics/post/-4004930.jpeg"),
       ];
 }
