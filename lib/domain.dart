@@ -12,8 +12,10 @@ class Snapshot {
   final int id;
   final String title;
   final String preview;
+  final String web;
+  final String diff;
 
-  const Snapshot(this.id, this.title, this.preview);
+  const Snapshot(this.id, this.title, this.preview, this.web, this.diff);
 }
 
 class Services {
@@ -41,20 +43,24 @@ class Services {
       ];
 
   static Future<List<Snapshot>> getAllSnapshots() async => [
-        Snapshot(0, "joel27, art, красивые картинки",
-            "http://img0.joyreactor.cc/pics/post/-4004930.jpeg"),
-        Snapshot(1, "joel27, art, красивые картинки",
-            "http://img0.joyreactor.cc/pics/post/-4004930.jpeg"),
-        Snapshot(2, "joel27, art, красивые картинки",
-            "http://img0.joyreactor.cc/pics/post/-4004930.jpeg"),
-        Snapshot(3, "joel27, art, красивые картинки",
-            "http://img0.joyreactor.cc/pics/post/-4004930.jpeg"),
-        Snapshot(4, "joel27, art, красивые картинки",
-            "http://img0.joyreactor.cc/pics/post/-4004930.jpeg"),
-        Snapshot(5, "joel27, art, красивые картинки",
-            "http://img0.joyreactor.cc/pics/post/-4004930.jpeg"),
-        Snapshot(6, "joel27, art, красивые картинки",
-            "http://img0.joyreactor.cc/pics/post/-4004930.jpeg"),
+        Snapshot(
+            0,
+            "joel27, art, красивые картинки",
+            "http://img0.joyreactor.cc/pics/post/-4004930.jpeg",
+            "https://google.com/",
+            "https://ya.ru/"),
+        Snapshot(
+            1,
+            "joel27, art, красивые картинки",
+            "http://img0.joyreactor.cc/pics/post/-4004930.jpeg",
+            "https://ru.wikipedia.org/wiki/Битва_при_Арсуфе",
+            "https://ru.wikipedia.org/wiki/Битва_при_Таутоне"),
+        Snapshot(
+            2,
+            "joel27, art, красивые картинки",
+            "http://img0.joyreactor.cc/pics/post/-4004930.jpeg",
+            "https://ru.wikipedia.org/wiki/Битва_при_Арсуфе",
+            "https://ru.wikipedia.org/wiki/Битва_при_Таутоне"),
       ];
 
   static Future<Snapshot> getSnapshot(int id) async =>
