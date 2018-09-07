@@ -1,6 +1,7 @@
 import 'package:dartea/dartea.dart';
 import 'package:flutter/material.dart';
 import 'package:spectator/domain.dart';
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 class Model {
   final String preview;

@@ -22,6 +22,7 @@ dependencies:
   built_value: ^6.1.1
   dartea: ^0.5.5
   google_sign_in: ^3.0.5
+  flutter_webview_plugin: ^0.2.1+2
 
 dev_dependencies:
   flutter_test:
