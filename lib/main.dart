@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:spectator/list.dart';
+import 'package:spectator/snapshot.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,7 +13,8 @@ class MyApp extends StatelessWidget {
         primaryColorBrightness: Brightness.dark,
         accentColorBrightness: Brightness.dark,
       ),
-      home: mkListWidget(),
+      // home: mkListWidget(),
+      home: mkSnapshotWidget(0),
     );
   }
 }

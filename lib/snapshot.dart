@@ -18,7 +18,7 @@ class SnapshotMsg extends Msg {
 }
 
 Upd<Model, Msg> _init(int id) => Upd(
-      Model(id.toString(), "", ""),
+      Model(null, null, null),
       effects: Cmd.ofAsyncFunc(
         () => Services.getSnapshot(id),
         onSuccess: (r) => SnapshotMsg(r),
@@ -28,11 +28,19 @@ Upd<Model, Msg> _init(int id) => Upd(
 Upd<Model, Msg> _update(Msg msg, Model model) => Upd(model);
 
 Widget _view(BuildContext context, Dispatch<Msg> dispatch, Model model) {
-  return Scaffold(
-    appBar: AppBar(title: Text("Snapshot")),
-    body: Column(
-      children: <Widget>[
-        Center(child: Text("Hello World #" + model.preview)),
+  return WebviewScaffold(
+    url: model.preview,
+    appBar: AppBar(
+      title: Text("Snapshot"),
+      actions: <Widget>[
+        new IconButton(
+          icon: new Icon(Icons.web),
+          onPressed: () {},
+        ),
+        new IconButton(
+          icon: new Icon(Icons.email),
+          onPressed: () {},
+        ),
       ],
     ),
   );
